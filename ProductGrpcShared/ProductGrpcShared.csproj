@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="34.0.2" />
+    <PackageReference Include="Google.Protobuf" Version="3.18.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.40.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.40.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Polly" Version="7.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\ProductGrpc\Protos\product.proto" GrpcServices="Client">
+      <Link>Protos\product.proto</Link>
+    </Protobuf>
+  </ItemGroup>
+
+</Project>

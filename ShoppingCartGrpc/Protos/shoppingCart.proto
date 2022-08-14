@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "ShoppingCartGrpc";
+
+package shoppingCart;
+
+service ShoppingCartService {
+	rpc Available (.google.protobuf.Empty) returns (.google.protobuf.Empty);
+	rpc GetShoppingCart (GetShoppingCartRequest) returns (GetShoppingCartResponse);
+	rpc CreateShoppingCart (CreateShoppingCartRequest) returns (CreateShoppingCartResponse);
+	rpc CreateShoppingCartItem (stream CreateShoppingCartItemRequest) returns (CreateShoppingCartItemResponse);
+	rpc DeleteShoppingCartItem (DeleteShoppingCartItemRequest) returns (DeleteShoppingCartItemResponse);
+}
+
+message GetShoppingCartRequest {
+	string username = 1;
+}
+
+message GetShoppingCartResponse {
+	string id = 1;
+	string username = 2;
+	double totalPrice = 3;
+	.google.protobuf.Timestamp createdAt = 4;
+	.google.protobuf.Timestamp modifiedAt = 5;
+	repeated .shoppingCart.ShoppingCartItemResponse items = 6;
+}
+
+message CreateShoppingCartRequest {
+	string username = 1;
+	repeated .shoppingCart.ShoppingCartItemRequest items = 2;
+}
+
+message CreateShoppingCartResponse {
+	string message = 1;
+}
+
+message CreateShoppingCartItemRequest {
+	string username = 1;
+	string discountCode = 2;
+	.shoppingCart.ShoppingCartItemRequest item = 3;
+}
+
+message CreateShoppingCartItemResponse {
+	string message = 1;
+}
+
+message DeleteShoppingCartItemRequest {
+	string username = 1;
+	.shoppingCart.ShoppingCartItemRequest item = 2;
+}
+
+message DeleteShoppingCartItemResponse {
+	string message = 1;
+}
+
+message ShoppingCartItemRequest {
+	int32 quantity = 1;
+	string color = 2;
+	double price = 3;
+	string productId = 4;
+	string productName = 5;
+}
+
+message ShoppingCartItemResponse {
+	string id = 1;
+	int32 quantity = 2;
+	string color = 3;
+	double price = 4;
+	string productId = 5;
+	string productName = 6;
+	.google.protobuf.Timestamp createdAt = 7;
+	.google.protobuf.Timestamp modifiedAt = 8;
+}

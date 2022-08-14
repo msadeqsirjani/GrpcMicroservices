@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "ProductGrpc";
+
+package product;
+
+service ProductService {
+	rpc GetProducts (GetProductsRequest) returns (stream GetProductResponse);
+	rpc GetProduct (GetProductRequest) returns (GetProductResponse);
+	rpc CreateProduct (CreateProductRequest) returns (CreateProductResponse);
+	rpc UpdateProduct (UpdateProductRequest) returns (UpdateProductResponse);
+	rpc DeleteProduct (DeleteProductRequest) returns (DeleteProductResponse);
+	rpc CreateProducts (stream CreateProductRequest) returns (CreateProductsResponse);
+	rpc Available (.google.protobuf.Empty) returns (.google.protobuf.Empty);
+}
+
+message GetProductsRequest {
+	int32 pageNo = 1;
+	int32 pageSize = 2;
+}
+
+message GetProductRequest {
+	string id	 = 1;
+}
+
+message GetProductResponse {
+	string id = 1;
+	string title = 2;
+	string description = 3;
+	float price = 4;
+	.product.ProductStatus status = 5;
+	.google.protobuf.Timestamp createdAt = 6;
+	.google.protobuf.Timestamp modifiedAt = 7;
+}
+
+message CreateProductRequest {
+	string title = 1;
+	string description = 2;
+	float price = 3;
+	.product.ProductStatus status = 4;
+}
+
+message CreateProductResponse {
+	string id = 1;
+}
+
+message UpdateProductRequest {
+	string id = 1;
+	string title = 2;
+	string description = 3;
+	float price = 4;
+	.product.ProductStatus status = 5;
+}
+
+message UpdateProductResponse {
+	string message = 1;
+}
+
+message DeleteProductRequest {
+	string id = 1;
+}
+
+message DeleteProductResponse {
+	string message = 1;
+}
+
+message CreateProductsResponse {
+	string message = 1;
+}
+
+enum ProductStatus {
+	InStock = 0;
+	Low = 1;
+	None = 2;
+}

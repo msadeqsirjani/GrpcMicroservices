@@ -1,0 +1,9 @@
+﻿global using Bogus;
+global using Google.Protobuf.WellKnownTypes;
+global using Grpc.Core;
+global using Mapster;
+global using Microsoft.EntityFrameworkCore;
+global using ShoppingCartGrpc.Data;
+global using ShoppingCartGrpc.Mocks;
+global using ShoppingCartGrpc.Models;
+global using ShoppingCartGrpc.Services;
