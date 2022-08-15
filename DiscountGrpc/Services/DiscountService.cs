@@ -18,6 +18,11 @@ public class DiscountService : Protos.DiscountService.DiscountServiceBase
     {
         var discount = _context.Discounts.FirstOrDefault(x => x.Code == request.Discount);
 
+        TypeAdapterConfig<Discount, GetDiscountResponse>
+            .NewConfig()
+            .Map(dest => dest.CreatedAt, src => Timestamp.FromDateTime(src.CreatedAt))
+            .Map(dest => dest.ModifiedAt, src => Timestamp.FromDateTime(src.ModifiedAt));
+
         var discountResponse = discount?.Adapt<GetDiscountResponse>();
 
         return Task.FromResult(discountResponse);
