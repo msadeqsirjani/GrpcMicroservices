@@ -1,8 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
+var discountUri = builder.Configuration.GetValue<string>("DiscountUri");
+
 builder.Services.AddGrpc();
-builder.Services.AddGrpcClient<DiscountService.DiscountServiceClient>(options =>
-    options.Address = new Uri("https://localhost:7091"));
+builder.Services.AddGrpcClient<DiscountService.DiscountServiceClient>(options => options.Address = new Uri(discountUri));
 builder.Services.AddTransient<DiscountFactory>();
 builder.Services.AddDbContext<ShoppingCartDbContext>(options =>
     options.UseInMemoryDatabase("ShoppingCartDb"));
