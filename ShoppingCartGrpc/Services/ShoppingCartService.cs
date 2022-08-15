@@ -3,12 +3,12 @@
 public class ShoppingCartService : ShoppingCartGrpc.ShoppingCartService.ShoppingCartServiceBase
 {
     private readonly ShoppingCartDbContext _context;
-    private readonly ILogger<ShoppingCartService> _logger;
+    private readonly DiscountFactory _factory;
 
-    public ShoppingCartService(ShoppingCartDbContext context, ILogger<ShoppingCartService> logger)
+    public ShoppingCartService(ShoppingCartDbContext context, DiscountFactory factory)
     {
         _context = context;
-        _logger = logger;
+        _factory = factory;
     }
 
     public override Task<Empty> Available(Empty request, ServerCallContext context)
@@ -109,9 +109,7 @@ public class ShoppingCartService : ShoppingCartGrpc.ShoppingCartService.Shopping
             }
             else
             {
-                // TODO : check discount & calculate the item last price -- call gRPC discount service
-
-                var discount = 100;
+                var discount = await _factory.GetDiscount(itemDto.DiscountCode);
 
                 var item = itemDto.Adapt<ShoppingCartItem>();
 
