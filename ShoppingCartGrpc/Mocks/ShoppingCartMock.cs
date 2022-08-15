@@ -49,17 +49,7 @@ public class ShoppingCartMock
             .RuleFor(x => x.Username, x => "msadeqsirjani")
             .RuleFor(x => x.CreatedAt, DateTime.UtcNow)
             .RuleFor(x => x.ModifiedAt, DateTime.UtcNow)
-            .RuleFor(x => x.Items, x => x.Make(3, () => new ShoppingCartItem()
-            {
-                Id = Guid.NewGuid(),
-                Quantity = x.Random.Int(1, 50),
-                Color = x.Commerce.Color(),
-                Price = x.Random.Int(10, 4500),
-                ProductId = x.PickRandom(ids),
-                ProductTitle = x.Commerce.ProductName(),
-                CreatedAt = DateTime.UtcNow,
-                ModifiedAt = DateTime.UtcNow
-            }));
+            .RuleFor(x=>x.Items, new List<ShoppingCartItem>());
 
         var oneCart = faker.Generate(1).First();
 
