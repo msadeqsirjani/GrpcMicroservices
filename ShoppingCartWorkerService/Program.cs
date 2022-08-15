@@ -7,6 +7,7 @@ var host = Host.CreateDefaultBuilder(args)
 
         configurationSection.Bind(workerServiceSetting);
 
+        services.Configure<WorkerServiceSetting>(configurationSection);
         services.AddHostedService<Worker>();
     })
     .Build();
