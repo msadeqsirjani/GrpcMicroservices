@@ -14,7 +14,7 @@ public class DiscountService : Protos.DiscountService.DiscountServiceBase
         return Task.FromResult(new Empty());
     }
 
-    public override Task<GetDiscountResponse?> GetDiscount(GetDiscountRequest request, ServerCallContext context)
+    public override Task<GetDiscountResponse> GetDiscount(GetDiscountRequest request, ServerCallContext context)
     {
         var discount = _context.Discounts.FirstOrDefault(x => x.Code == request.Discount);
 
@@ -23,7 +23,14 @@ public class DiscountService : Protos.DiscountService.DiscountServiceBase
             .Map(dest => dest.CreatedAt, src => Timestamp.FromDateTime(src.CreatedAt))
             .Map(dest => dest.ModifiedAt, src => Timestamp.FromDateTime(src.ModifiedAt));
 
-        var discountResponse = discount?.Adapt<GetDiscountResponse>();
+        var discountResponse = (discount ?? new Discount()
+        {
+            Id = Guid.NewGuid(),
+            Code = request.Discount,
+            Amount = 0,
+            CreatedAt = DateTime.UtcNow,
+            ModifiedAt = DateTime.UtcNow,
+        }).Adapt<GetDiscountResponse>();
 
         return Task.FromResult(discountResponse);
     }
