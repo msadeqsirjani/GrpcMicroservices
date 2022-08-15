@@ -2,12 +2,16 @@
 
 public class DiscountFactory
 {
+    private readonly DiscountService.DiscountServiceClient _client;
+
+    public DiscountFactory(DiscountService.DiscountServiceClient client)
+    {
+        _client = client;
+    }
+
     public async Task<int> GetDiscount(string discountCode)
     {
-        using var channel = GrpcChannel.ForAddress("https://localhost:7091");
-        var client = new DiscountService.DiscountServiceClient(channel);
-
-        var discount = await client.GetDiscountAsync(new GetDiscountRequest() {Discount = discountCode});
+        var discount = await _client.GetDiscountAsync(new GetDiscountRequest() {Discount = discountCode});
 
         return discount.Amount;
     }
