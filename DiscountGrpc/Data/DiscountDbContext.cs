@@ -2,12 +2,12 @@
 
 public class DiscountDbContext
 {
-    private readonly IEnumerable<Discount> _discounts;
-
     public DiscountDbContext()
     {
-        _discounts = new List<Discount>(10);
+        Discounts = new List<Discount>(3);
 
-        _discounts = DiscountMock.Seed();
+        Discounts = DiscountMock.Seed();
     }
+
+    public IEnumerable<Discount> Discounts { get; }
 }
