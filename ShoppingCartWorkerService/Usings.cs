@@ -4,3 +4,5 @@ global using ShoppingCartGrpc;
 global using ShoppingCartWorkerService;
 global using ShoppingCartWorkerService.Options;
 global using ProductGrpc;
+global using Grpc.Core;
+global using Polly;
