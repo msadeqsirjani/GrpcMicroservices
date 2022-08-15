@@ -111,11 +111,12 @@ public class ShoppingCartService : ShoppingCartGrpc.ShoppingCartService.Shopping
             {
                 var discount = await _factory.GetDiscount(itemDto.DiscountCode);
 
-                var item = itemDto.Adapt<ShoppingCartItem>();
+                var item = itemDto.Item.Adapt<ShoppingCartItem>();
+                item.ShoppingCartId = cart.Id;
 
                 item.Price -= discount;
 
-                cart.Items.Add(item);
+                await _context.ShoppingCartItems.AddAsync(item);
             }
         }
 
