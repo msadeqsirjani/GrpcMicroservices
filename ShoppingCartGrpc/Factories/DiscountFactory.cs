@@ -13,6 +13,6 @@ public class DiscountFactory
     {
         var discount = await _client.GetDiscountAsync(new GetDiscountRequest() {Discount = discountCode});
 
-        return discount.Amount;
+        return discount?.Amount ?? 0;
     }
 }
