@@ -37,7 +37,7 @@ public class ShoppingCartMock
                 Color = x.Commerce.Color(),
                 Price = x.Random.Int(10, 4500),
                 ProductId = x.PickRandom(ids),
-                ProductTitle = x.Commerce.ProductName(),
+                ProductName = x.Commerce.ProductName(),
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow
             }));

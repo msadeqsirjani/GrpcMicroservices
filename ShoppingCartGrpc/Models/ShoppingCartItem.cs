@@ -6,5 +6,6 @@ public class ShoppingCartItem : Entity
     public string Color { get; set; } = null!;
     public decimal Price { get; set; }
     public Guid ProductId { get; set; }
-    public string ProductTitle { get; set; } = null!;
+    public string ProductName { get; set; } = null!;
+    public Guid ShoppingCartId { get; set; }
 }
