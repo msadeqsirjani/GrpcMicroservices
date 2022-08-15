@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "DiscountGrpc.Protos";
+
+package discount;
+
+service DiscountService {
+	rpc Available (.google.protobuf.Empty) returns (.google.protobuf.Empty);
+	rpc GetDiscount (GetDiscountRequest) returns (GetDiscountResponse);
+}
+
+message GetDiscountRequest {
+	string discount = 1;
+}
+
+message GetDiscountResponse {
+	string id = 1;
+	string code = 2;
+	int32 amount = 3;
+	.google.protobuf.Timestamp createdAt = 4;
+	.google.protobuf.Timestamp modifiedAt = 5;
+}
