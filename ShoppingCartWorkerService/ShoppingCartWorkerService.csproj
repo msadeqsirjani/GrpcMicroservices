@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-ShoppingCartWorkerService-d52c5b6d-1a1b-4665-8a79-eea3979cb686</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.21.5" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.47.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.47.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\ProductGrpc\Protos\product.proto" GrpcServices="Client">
+      <Link>Protos\product.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\ShoppingCartGrpc\Protos\shoppingCart.proto" GrpcServices="Client">
+      <Link>Protos\shoppingCart.proto</Link>
+    </Protobuf>
+  </ItemGroup>
+</Project>
