@@ -1,6 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc();
+builder.Services.AddTransient<DiscountFactory>();
 builder.Services.AddDbContext<ShoppingCartDbContext>(options =>
     options.UseInMemoryDatabase("ShoppingCartDb"));
 
