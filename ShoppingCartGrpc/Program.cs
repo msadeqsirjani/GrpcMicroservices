@@ -7,11 +7,24 @@ builder.Services.AddGrpcClient<DiscountService.DiscountServiceClient>(options =>
 builder.Services.AddTransient<DiscountFactory>();
 builder.Services.AddDbContext<ShoppingCartDbContext>(options =>
     options.UseInMemoryDatabase("ShoppingCartDb"));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://localhost:7042";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false
+        };
+    });
+builder.Services.AddAuthorization();
+
 
 var app = builder.Build();
 
 DatabaseSeed(app);
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapGrpcService<ShoppingCartService>();
 app.MapGet("/", () => "Hello World!");
 
