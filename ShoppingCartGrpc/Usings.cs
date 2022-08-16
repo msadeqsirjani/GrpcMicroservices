@@ -3,6 +3,7 @@ global using DiscountGrpc.Protos;
 global using Google.Protobuf.WellKnownTypes;
 global using Grpc.Core;
 global using Mapster;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.IdentityModel.Tokens;

@@ -1,5 +1,6 @@
 ﻿namespace ShoppingCartGrpc.Services;
 
+[Authorize]
 public class ShoppingCartService : ShoppingCartGrpc.ShoppingCartService.ShoppingCartServiceBase
 {
     private readonly ShoppingCartDbContext _context;
