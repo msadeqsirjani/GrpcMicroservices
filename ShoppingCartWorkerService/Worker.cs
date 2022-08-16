@@ -15,6 +15,8 @@ public class Worker : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
+            var token = await GenerateTokenAsync(stoppingToken);
+
             const int maxRetryAttempts = 10;
             var pauseBetweenFailures = TimeSpan.FromSeconds(3);
 
@@ -24,22 +26,21 @@ public class Worker : BackgroundService
                 {
                     Console.WriteLine($"{exception.Message} => {pause.TotalSeconds}");
                 })
-                .ExecuteAsync(async () => await Do(stoppingToken));
-
-            await Do(stoppingToken);
+                .ExecuteAsync(async () => await Do(token, stoppingToken));
 
             await Task.Delay(_options.Interval, stoppingToken);
         }
     }
 
-    private async Task Do(CancellationToken stoppingToken)
+    private async Task Do(string token, CancellationToken stoppingToken)
     {
         using var cartChannel = GrpcChannel.ForAddress(_options.ShoppingCartUrl);
         var cartClient = new ShoppingCartService.ShoppingCartServiceClient(cartChannel);
 
-        await CreateShoppingCart(cartClient);
+        var headers = new Metadata { new("Authorization", $"Bearer {token}") };
+        await CreateShoppingCart(cartClient, headers);
 
-        using var cartStream = cartClient.CreateShoppingCartItem();
+        using var cartStream = cartClient.CreateShoppingCartItem(headers);
 
         using var productChannel = GrpcChannel.ForAddress(_options.ProductUrl);
         var productClient = new ProductService.ProductServiceClient(productChannel);
@@ -90,11 +91,33 @@ public class Worker : BackgroundService
         Console.WriteLine(itemResponse);
     }
 
-    private async Task CreateShoppingCart(ShoppingCartService.ShoppingCartServiceClient client)
+    private async Task CreateShoppingCart(ShoppingCartService.ShoppingCartServiceClient client, Metadata headers)
     {
         await client.CreateShoppingCartAsync(new CreateShoppingCartRequest
         {
             Username = _options.Username
-        });
+        }, headers);
+    }
+
+    private async Task<string> GenerateTokenAsync(CancellationToken stoppingToken)
+    {
+        var client = new HttpClient();
+        var discovery = await client.GetDiscoveryDocumentAsync(_options.IdentityUrl, stoppingToken);
+        if (discovery.IsError)
+        {
+            Console.WriteLine(discovery.Error);
+
+            return string.Empty;
+        }
+
+        var token = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest()
+        {
+            Address = discovery.TokenEndpoint,
+            ClientId = _options.ClientId,
+            ClientSecret = _options.ClientSecret,
+            Scope = _options.Scope
+        }, stoppingToken);
+
+        return token.AccessToken;
     }
 }

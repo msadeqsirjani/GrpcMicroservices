@@ -1,4 +1,5 @@
 ﻿global using Grpc.Net.Client;
+global using IdentityModel.Client;
 global using Microsoft.Extensions.Options;
 global using ShoppingCartGrpc;
 global using ShoppingCartWorkerService;
